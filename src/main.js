@@ -5,6 +5,7 @@ var newComment;
 var comments = localStorage.getItem("comments") ? JSON.parse(localStorage.getItem("comments")) : [];
 
 //  Query Selectors:
+var form = document.querySelector(".form");
 var showStarred = document.querySelector("#showStarred");
 var titleInput = document.querySelector("#titleInput");
 var bodyInput = document.querySelector("#bodyInput");
@@ -33,6 +34,19 @@ function showStarred() {
   // Hides instances where `isStarred = false`
 }
 
+form.addEventListener("keypress", activateSave);
+function activateSave() {
+  if(titleInput.value !== "" && bodyInput.value !== "") {
+    saveButton.disabled = false;
+    saveButton.style.background = "#353667";
+    // saveButton.classList.add(".purple");
+  }else{
+    saveButton.disabled = true;
+    saveButton.style.background = "#5356A4";
+  }
+}
+// titleInput.value === "" && bodyInput.value !== "" &&
+
 function enableSaved(){
   if (titleInput.value.length>0 && bodyInput.value.length>0) {
     // enable the saved button (should default as disabled first [css])
@@ -49,8 +63,7 @@ saveButton.addEventListener("click", function(event) {
       window.alert("You already had that idea!")
     }
   }
-);
-
+)
 
 //change grey star to red star
 //have card save in Local storage.
