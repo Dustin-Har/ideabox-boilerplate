@@ -27,6 +27,8 @@ starInactive.addEventListener("click", activateStar);
 starActive.addEventListener("click", removeStar);
 deleteInactive.addEventListener("mousedown", activateDelete);
 deleteActive.addEventListener("mouseup", removeIdea);
+form.addEventListener("keydown", activateSave);
+
 // commentIcon.addEventListener("click", addComment);
 
 //  Functions:
@@ -34,23 +36,30 @@ function showStarred() {
   // Hides instances where `isStarred = false`
 }
 
-form.addEventListener("keypress", activateSave);
-function activateSave() {
-  if(titleInput.value !== "" && bodyInput.value !== "") {
-    saveButton.disabled = false;
-    saveButton.style.background = "#353667";
-    // saveButton.classList.add(".purple");
-  }else{
-    saveButton.disabled = true;
-    saveButton.style.background = "#5356A4";
+// save button needs to be disabled by default and not after keypress
+function activateSave(e) {
+  var key = e.key;
+  if(titleInput.value && bodyInput.value) {
+    enableSaveBttn();
+  } else if (key === "Backspace" || key === "Delete") {
+      disableSaveBttn();
+  } else if (!titleInput.value && !bodyInput.value) {
+      disableSaveBttn();
   }
 }
-// titleInput.value === "" && bodyInput.value !== "" &&
 
-function enableSaved(){
-  if (titleInput.value.length>0 && bodyInput.value.length>0) {
-    // enable the saved button (should default as disabled first [css])
-  }
+function disableSaveBttn(){
+  saveButton.disabled = true;
+  saveButton.style.background = "#5356A4";
+  saveButton.classList.remove("pointer");
+  titleInput.value = "";
+  bodyInput.value = "";
+}
+
+function enableSaveBttn(){
+  saveButton.disabled = false;
+  saveButton.style.background = "#353667";
+  saveButton.classList.add("pointer");
 }
 
 saveButton.addEventListener("click", function(event) {
@@ -59,6 +68,7 @@ saveButton.addEventListener("click", function(event) {
   if (!ideas.includes(newIdea)) {
     ideas.push(newIdea);
     newIdea.saveToStorage();
+    disableSaveBttn();
   } else {
       window.alert("You already had that idea!")
     }
@@ -93,7 +103,7 @@ function removeIdea() {
 
 function togglePictures(pic1, pic2) {
   pic1.hidden = true;
-  pic2.hidden= false;
+  pic2.hidden = false;
 }
 
 function displayCards(){
