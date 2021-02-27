@@ -1,8 +1,9 @@
 //  Global Variables:
 var newIdea;
 var ideas = localStorage.getItem("ideas") ? JSON.parse(localStorage.getItem("ideas")) : [];
-var newComment;
-var comments = localStorage.getItem("comments") ? JSON.parse(localStorage.getItem("comments")) : [];
+
+// var newComment;
+// var comments = localStorage.getItem("comments") ? JSON.parse(localStorage.getItem("comments")) : [];
 
 //  Query Selectors:
 var form = document.querySelector(".form");
@@ -26,10 +27,11 @@ saveButton.disabled = true;
 // searchInput.addEventListener("keydown", filterIdeas);
 starInactive.addEventListener("click", activateStar);
 starActive.addEventListener("click", removeStar);
-deleteInactive.addEventListener("mousedown", activateDelete);
-deleteActive.addEventListener("mouseup", removeIdea);
+// deleteInactive.addEventListener("mousedown", activateDelete);
+// deleteActive.addEventListener("mouseup", removeIdea);
 form.addEventListener("keydown", activateSave);
-
+cardSection.addEventListener("click", deleteCard);
+document.addEventListener("DOMContentLoaded", displayCards);
 // commentIcon.addEventListener("click", addComment);
 
 //  Functions:
@@ -74,6 +76,7 @@ saveButton.addEventListener("click", function(event) {
     newIdea.saveToStorage();
     saveButton.disable = true;
     displayCards();
+    return newIdea;
   } else {
       window.alert("You already had that idea!")
     }
@@ -92,18 +95,29 @@ function removeStar() {
 }
 
 //
-function activateDelete(event) {
-  togglePictures(deleteInactive, deleteActive);
-}
+// cardSection.addEventListener("mousedown", activateDelete);
+//
+// function activateDelete(event) {
+//   if (event.target.classList.value === "delete-inactive") {
+//     togglePictures(deleteInactive, deleteActive);
+// }}
 
 
 
-//delete desired card from screen and local storage
-function removeIdea() {
-  if (event.target.classList.contains("delete-active")) {
-     event.target.closest(".idea-card").remove();
+//DELETE: desired card from screen and local storage
+function deleteCard() {
+  if (event.target.classList.value === "delete-inactive") {
+    for (i = 0; i < ideas.length; i++) {
+      if (parseInt(event.target.closest(".idea-card").id) === ideas[i].id) {
+        var focusIdea = new Idea(ideas[i].title, ideas[i].body);
+        ideas.splice(i, 1);
+        focusIdea.deleteFromStorage();
+        displayCards();
+      }
+    }
   }
 }
+
 
 
 function togglePictures(pic1, pic2) {
@@ -115,8 +129,8 @@ function displayCards(){
   cardSection.innerHTML = "";
   for(var i = 0; i < ideas.length; i++){
   cardSection.innerHTML += `
-  <div class="idea-card">
-    <div class="card-controls" id=${ideas[i].id}>
+  <div class="idea-card" id=${ideas[i].id}>
+    <div class="card-controls">
       <img class="star-inactive" id="starInactive" src="assets/star.svg" alt="star">
       <img class="star-active" id="starActive" src="assets/star-active.svg" alt="active star" hidden>
       <img class="delete-inactive" id="deleteInactive" src="assets/delete.svg" alt="delete">

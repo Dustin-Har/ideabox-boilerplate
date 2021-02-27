@@ -10,7 +10,7 @@ class Idea {
   }
 
   deleteFromStorage() {
-   saveToStorage()
+    localStorage.setItem("ideas", JSON.stringify(ideas));
   }
 
   updateIdea(title, body) {
