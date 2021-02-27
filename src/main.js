@@ -16,10 +16,11 @@ var starInactive = document.querySelector("#starInactive");
 var deleteActive = document.querySelector("#deleteActive");
 var deleteInactive = document.querySelector("#deleteInactive");
 var commentIcon = document.querySelector("#commentIcon");
-var cardSection = document.querySelectorAll(".cardSection");
+var cardSection = document.querySelector("#cardSection");
 
 var savedIdeas = [];
 
+saveButton.disabled = true;
 //  Event Listeners:
 // showStarred.addEventListener("click", showStarred);
 // searchInput.addEventListener("keydown", filterIdeas);
@@ -40,27 +41,30 @@ function showStarred() {
 function activateSave(e) {
   var key = e.key;
   if(titleInput.value && bodyInput.value) {
-    enableSaveBttn();
+    // enableSaveBttn();
+    saveButton.disabled = false;
   } else if (key === "Backspace" || key === "Delete") {
-      disableSaveBttn();
+      // disableSaveBttn();
+      saveButton.disabled = true;
   } else if (!titleInput.value && !bodyInput.value) {
-      disableSaveBttn();
+      // disableSaveBttn();
+      saveButton.disabled = true;
   }
 }
 
-function disableSaveBttn(){
-  saveButton.disabled = true;
-  saveButton.style.background = "#5356A4";
-  saveButton.classList.remove("pointer");
-  titleInput.value = "";
-  bodyInput.value = "";
-}
-
-function enableSaveBttn(){
-  saveButton.disabled = false;
-  saveButton.style.background = "#353667";
-  saveButton.classList.add("pointer");
-}
+// function disableSaveBttn(){
+//   saveButton.disabled = true;
+//   saveButton.style.background = "#5356A4";
+//   saveButton.classList.remove("pointer");
+//   titleInput.value = "";
+//   bodyInput.value = "";
+// }
+//
+// function enableSaveBttn(){
+//   saveButton.disabled = false;
+//   saveButton.style.background = "#353667";
+//   saveButton.classList.add("pointer");
+// }
 
 saveButton.addEventListener("click", function(event) {
   event.preventDefault();
@@ -68,7 +72,8 @@ saveButton.addEventListener("click", function(event) {
   if (!ideas.includes(newIdea)) {
     ideas.push(newIdea);
     newIdea.saveToStorage();
-    disableSaveBttn();
+    saveButton.disable = true;
+    displayCards();
   } else {
       window.alert("You already had that idea!")
     }
@@ -109,9 +114,9 @@ function togglePictures(pic1, pic2) {
 function displayCards(){
   cardSection.innerHTML = "";
   for(var i = 0; i < ideas.length; i++){
-  cardSection= `
+  cardSection.innerHTML += `
   <div class="idea-card">
-    <div class="card-controls" id=${idea[i].id}>
+    <div class="card-controls" id=${ideas[i].id}>
       <img class="star-inactive" id="starInactive" src="assets/star.svg" alt="star">
       <img class="star-active" id="starActive" src="assets/star-active.svg" alt="active star" hidden>
       <img class="delete-inactive" id="deleteInactive" src="assets/delete.svg" alt="delete">

@@ -126,7 +126,13 @@ body {
   border: solid 3px #7375B5;
   border-radius: 5px;
   outline: none;
+  background-color: #353667;
+  cursor: pointer;
+}
+
+#saveButton:disabled {
   background-color: #5356A4;
+  cursor: auto;
 }
 
 .pointer {
