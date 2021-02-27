@@ -5,6 +5,7 @@ var newComment;
 var comments = localStorage.getItem("comments") ? JSON.parse(localStorage.getItem("comments")) : [];
 
 //  Query Selectors:
+var form = document.querySelector(".form");
 var showStarred = document.querySelector("#showStarred");
 var titleInput = document.querySelector("#titleInput");
 var bodyInput = document.querySelector("#bodyInput");
@@ -26,6 +27,8 @@ starInactive.addEventListener("click", activateStar);
 starActive.addEventListener("click", removeStar);
 deleteInactive.addEventListener("mousedown", activateDelete);
 deleteActive.addEventListener("mouseup", removeIdea);
+form.addEventListener("keydown", activateSave);
+
 // commentIcon.addEventListener("click", addComment);
 
 //  Functions:
@@ -33,10 +36,30 @@ function showStarred() {
   // Hides instances where `isStarred = false`
 }
 
-function enableSaved(){
-  if (titleInput.value.length>0 && bodyInput.value.length>0) {
-    // enable the saved button (should default as disabled first [css])
+// save button needs to be disabled by default and not after keypress
+function activateSave(e) {
+  var key = e.key;
+  if(titleInput.value && bodyInput.value) {
+    enableSaveBttn();
+  } else if (key === "Backspace" || key === "Delete") {
+      disableSaveBttn();
+  } else if (!titleInput.value && !bodyInput.value) {
+      disableSaveBttn();
   }
+}
+
+function disableSaveBttn(){
+  saveButton.disabled = true;
+  saveButton.style.background = "#5356A4";
+  saveButton.classList.remove("pointer");
+  titleInput.value = "";
+  bodyInput.value = "";
+}
+
+function enableSaveBttn(){
+  saveButton.disabled = false;
+  saveButton.style.background = "#353667";
+  saveButton.classList.add("pointer");
 }
 
 saveButton.addEventListener("click", function(event) {
@@ -45,12 +68,12 @@ saveButton.addEventListener("click", function(event) {
   if (!ideas.includes(newIdea)) {
     ideas.push(newIdea);
     newIdea.saveToStorage();
+    disableSaveBttn();
   } else {
       window.alert("You already had that idea!")
     }
   }
-);
-
+)
 
 //change grey star to red star
 //have card save in Local storage.
@@ -80,7 +103,7 @@ function removeIdea() {
 
 function togglePictures(pic1, pic2) {
   pic1.hidden = true;
-  pic2.hidden= false;
+  pic2.hidden = false;
 }
 
 function displayCards(){
