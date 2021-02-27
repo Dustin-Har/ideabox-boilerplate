@@ -135,9 +135,6 @@ body {
   cursor: auto;
 }
 
-.pointer {
-  cursor: pointer;
-}
 
 .search-bar {
   display: flex;
@@ -205,6 +202,7 @@ body {
 .delete-active,
 .comment-icon {
   width: 15%;
+  cursor: pointer;
 }
 /*~~~~~~~MIDDLE SECTION~~~~~~~*/
 .idea-content {
