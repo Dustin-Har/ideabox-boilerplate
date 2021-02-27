@@ -29,7 +29,7 @@ starActive.addEventListener("click", removeStar);
 deleteInactive.addEventListener("mousedown", activateDelete);
 deleteActive.addEventListener("mouseup", removeIdea);
 form.addEventListener("keydown", activateSave);
-
+document.addEventListener("DOMContentLoaded", displayCards);
 // commentIcon.addEventListener("click", addComment);
 
 //  Functions:
