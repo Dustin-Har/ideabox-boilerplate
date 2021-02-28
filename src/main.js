@@ -1,9 +1,6 @@
 //  Global Variables:
 var newIdea;
-var ideas = localStorage.getItem("ideas") ? JSON.parse(localStorage.getItem("ideas")) : [];
-
-// var newComment;
-// var comments = localStorage.getItem("comments") ? JSON.parse(localStorage.getItem("comments")) : [];
+var ideas = [];
 
 //  Query Selectors:
 var form = document.querySelector(".form");
@@ -13,45 +10,67 @@ var bodyInput = document.querySelector("#bodyInput");
 var saveButton = document.querySelector("#saveButton");
 var searchInput = document.querySelector("#searchInput");
 var star = document.querySelectorAll(".star");
-// var starActive = document.querySelector("#starActive");
-// var starInactive = document.querySelector("#starInactive");
-// var deleteActive = document.querySelector("#deleteActive");
-// var deleteInactive = document.querySelector("#deleteInactive");
 var commentIcon = document.querySelector("#commentIcon");
 var cardSection = document.querySelector("#cardSection");
-
-var savedIdeas = [];
-
+var showStarredBtn = document.querySelector("#showStarred");
+var filterOn = false;
 saveButton.disabled = true;
-//  Event Listeners:
-// showStarred.addEventListener("click", showStarred);
-// searchInput.addEventListener("keydown", filterIdeas);
-// starInactive.addEventListener("click", activateStar);
-// starActive.addEventListener("click", removeStar);
-// deleteInactive.addEventListener("mousedown", activateDelete);
-// deleteActive.addEventListener("mouseup", removeIdea);
-form.addEventListener("keydown", activateSave);
-cardSection.addEventListener("click", deleteCard);
-document.addEventListener("DOMContentLoaded", displayCards);
-// commentIcon.addEventListener("click", addComment);
 
-//  Functions:
-function showStarred() {
-  // Hides instances where `isStarred = false`
+form.addEventListener("keyup", activateSave);
+cardSection.addEventListener("click", deleteCard);
+showStarredBtn.addEventListener("click", showStarredCards);
+window.addEventListener("onload", getStorage());
+searchInput.addEventListener("keyup", inputSearch);
+
+
+function getStorage() {
+  var storedIdeas = localStorage.getItem("ideas");
+  ideas = JSON.parse(localStorage.getItem("ideas")) || [];
+  instanciateStorage(ideas);
 }
 
-// save button needs to be disabled by default and not after keypress
+function instanciateStorage(parsedStorage) {
+  for (var i=0; i<parsedStorage.length; i++) {
+    parsedStorage[i] = new Idea(parsedStorage[i].title, parsedStorage[i].body, parsedStorage[i].id, parsedStorage[i].isStarred)
+    localStorage.setItem("ideas", JSON.stringify(parsedStorage));
+  } displayCards();
+}
+
+function showStarredCards() {
+  if (!filterOn) {
+    cardSection.innerHTML = "";
+    filterOn = true;
+    showStarredBtn.innerText = "Show All Ideas"
+    for (var i = 0; i < ideas.length; i++) {
+      if (ideas[i].isStarred) {
+        htmlCreator(i);
+      }
+    }
+  } else {
+    filterOn = false;
+    showStarredBtn.innerText = "Show Starred Ideas";
+    displayCards();
+  }
+}
+
 function activateSave(e) {
   var key = e.key;
-  if(titleInput.value && bodyInput.value) {
-    // enableSaveBttn();
+  if (titleInput.value && bodyInput.value) {
     saveButton.disabled = false;
   } else if (key === "Backspace" || key === "Delete") {
-      // disableSaveBttn();
-      saveButton.disabled = true;
+    saveButton.disabled = true;
   } else if (!titleInput.value && !bodyInput.value) {
-      // disableSaveBttn();
-      saveButton.disabled = true;
+    saveButton.disabled = true;
+  }
+}
+
+function inputSearch() {
+  cardSection.innerHTML = "";
+  for (var i = 0; i < ideas.length; i++) {
+    if (ideas[i].title.toLowerCase().includes(searchInput.value.toLowerCase())
+      ||  ideas[i].body.toLowerCase().includes(searchInput.value.toLowerCase())) {
+      htmlCreator(i);
+    }
   }
 }
 
@@ -60,12 +79,6 @@ function disableSaveBttn() {
   titleInput.value = "";
   bodyInput.value = "";
 }
-//
-// function enableSaveBttn(){
-//   saveButton.disabled = false;
-//   saveButton.style.background = "#353667";
-//   saveButton.classList.add("pointer");
-// }
 
 saveButton.addEventListener("click", function(event) {
   event.preventDefault();
@@ -75,31 +88,8 @@ saveButton.addEventListener("click", function(event) {
   disableSaveBttn()
   displayCards();
   return newIdea;
-  }
-)
+})
 
-//change grey star to red star
-//have card save in Local storage.
-// function activateStar() {
-//   togglePictures(starInactive, starActive)
-//
-// }
-//
-// function removeStar() {
-//   togglePictures(starActive, starInactive);
-// }
-
-//
-// cardSection.addEventListener("mousedown", activateDelete);
-//
-// function activateDelete(event) {
-//   if (event.target.classList.value === "delete-inactive") {
-//     togglePictures(deleteInactive, deleteActive);
-// }}
-
-
-
-//DELETE: desired card from screen and local storage
 function deleteCard() {
   if (event.target.classList.value === "delete") {
     for (i = 0; i < ideas.length; i++) {
@@ -113,12 +103,8 @@ function deleteCard() {
   }
 }
 
-// function togglePictures(pic1, pic2) {
-//   pic1.hidden = true;
-//   pic2.hidden = false;
-// }
-
 cardSection.addEventListener('click', changeStar);
+
 function changeStar(event) {
   if (event.target.classList.contains("star")) {
     if (event.target.src.includes("/assets/star.svg")) {
@@ -132,33 +118,34 @@ function changeStar(event) {
 }
 
 function updateInstance(event) {
-  for (var i = 0; i<ideas.length; i++) {
+  for (var i = 0; i < ideas.length; i++) {
     if (parseInt(event.target.closest(".idea-card").id) === ideas[i].id) {
-      var focusIdea = new Idea(ideas[i].title, ideas[i].body);
-      if (ideas[i].isStarred === true) {
-      ideas[i].isStarred = false;
-      focusIdea.saveToStorage();
-    } else {
-      ideas[i].isStarred = true;
-      focusIdea.saveToStorage();
+      if (!ideas[i].isStarred) {
+        ideas[i].updateIdea(ideas[i].title, ideas[i].body, ideas[i].id, true);
+        ideas[i].saveToStorage();
+      } else {
+        ideas[i].updateIdea(ideas[i].title, ideas[i].body, ideas[i].id, false);
+        ideas[i].saveToStorage();
+      }
     }
-  }
   }
 }
 
 function checkStarredValue(index) {
-    if (ideas[index].isStarred) {
-      return "assets/star-active.svg"
-    } else {
-      return "assets/star.svg"
-    }
+  if (ideas[index].isStarred) {
+    return "assets/star-active.svg"
+  } else {
+    return "assets/star.svg"
   }
+}
 
 function displayCards() {
+  showStarredBtn.innerText = "Show Starred Ideas";
+  filterOn = false;
   cardSection.innerHTML = "";
   for (var i = 0; i < ideas.length; i++) {
-  htmlCreator(i);
-}
+    htmlCreator(i);
+  }
 }
 
 function htmlCreator(index) {
@@ -174,18 +161,7 @@ function htmlCreator(index) {
     </article>
     <div class="comment-body">
       <img class="comment-icon" id="commentIcon" src="assets/comment.svg" alt="comment">
-      <h2 class="comment" id="commentIcon">Comment</h2>
+      <h2 class="comment" id="comment">Comment</h2>
     </div>
   </div>`
 }
-
-
-/*
-
-- Search (filter) - takes form string and scans our instances for it (both title and body)
-- Star icon - Sets the instance isStarred value to `true`/ changes icon
-  *toggles value and icon upon conditions met*
-- Delete icon - Changes icon on mousedown/
-  removes item from array on mouse up/ displays fresh view
-
-*/
