@@ -161,7 +161,7 @@ function htmlCreator(index) {
     </article>
     <div class="comment-body">
       <img class="comment-icon" id="commentIcon" src="assets/comment.svg" alt="comment">
-      <h2 class="comment" id="commentIcon">Comment</h2>
+      <h2 class="comment" id="comment">Comment</h2>
     </div>
   </div>`
 }
