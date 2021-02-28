@@ -13,11 +13,10 @@ class Idea {
     localStorage.setItem("ideas", JSON.stringify(ideas));
   }
 
-  updateIdea() {
-      if (this.isStarred) {
-        this.isStarred = true;
-      } else {
-        this.isStarred = false;
-      }
+  updateIdea(id, title, body, star) {
+    this.id = id;
+    this.title = title;
+    this.body = body;
+    this.isStarred = star;
     }
   }

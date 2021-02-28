@@ -111,6 +111,22 @@ function updateInstance(event) {
   }
 }
 
+
+
+// line 102 - 110
+// var focusIdea = new Idea(ideas[i].id, ideas[i].title, ideas[i].body);
+// if (!ideas[i].isStarred) {
+//   console.log("isstarred is false");
+//   ideas[i].updateIdea(ideas[i].id, ideas[i].title, ideas[i].body, true);
+//   console.log(focusIdea);
+//   focusIdea.saveToStorage();
+// } else {
+//   focusIdea.updateIdea(ideas[i].id, ideas[i].title, ideas[i].body, false);
+//   focusIdea.saveToStorage();
+// }
+// }
+
+
 function checkStarredValue(index) {
   if (ideas[index].isStarred) {
     return "assets/star-active.svg"
@@ -120,6 +136,8 @@ function checkStarredValue(index) {
 }
 
 function displayCards() {
+  showStarredBtn.innerText = "Show Starred Ideas";
+  filterOn = false;
   cardSection.innerHTML = "";
   for (var i = 0; i < ideas.length; i++) {
     htmlCreator(i);
