@@ -13,6 +13,7 @@ var star = document.querySelectorAll(".star");
 var commentIcon = document.querySelector("#commentIcon");
 var cardSection = document.querySelector("#cardSection");
 var showStarredBtn = document.querySelector("#showStarred");
+var commentSection = document.querySelector("#commentSection")
 var filterOn = false;
 saveButton.disabled = true;
 
@@ -163,5 +164,19 @@ function htmlCreator(index) {
       <img class="comment-icon" id="commentIcon" src="assets/comment.svg" alt="comment">
       <h2 class="comment" id="comment">Comment</h2>
     </div>
+  </div>`
+}
+
+function commentBox() {
+  cardSection.innerHTML += `
+  <div class="commentArea" id=${ideas[index].id}>
+    <div class="comment-controls">
+      <img class="star" src="${checkStarredValue(index)}" alt="star">
+      <img class="delete" src="assets/delete.svg" alt="delete">
+    </div>
+    <article class="idea-content">
+      <h1 class="idea-title"><strong>${ideas[index].title}</strong></h1>
+      <p class="idea-body">${ideas[index].body}</p>
+    </article>
   </div>`
 }
