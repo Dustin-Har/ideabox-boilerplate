@@ -135,9 +135,6 @@ body {
   cursor: auto;
 }
 
-.pointer {
-  cursor: pointer;
-}
 
 .search-bar {
   display: flex;
@@ -199,12 +196,11 @@ body {
   border-bottom: 2px solid #1F1F3D;
 }
 /*~~~~~~~PICTURES~~~~~~~*/
-.star-inactive,
-.star-active,
-.delete-inactive,
-.delete-active,
+.star
+.delete,
 .comment-icon {
   width: 15%;
+  cursor: pointer;
 }
 /*~~~~~~~MIDDLE SECTION~~~~~~~*/
 .idea-content {
@@ -243,4 +239,8 @@ body {
   margin: 1%;
   font-weight: bold;
   font-size: 85%;
+}
+
+.hidden {
+  display: none!important;
 }

@@ -1,9 +1,9 @@
 class Idea {
-  constructor(title, body) {
+  constructor(title, body, star) {
     this.id = Date.now();
     this.title = title;
     this.body = body;
-    this.isStarred = false;
+    this.isStarred = star || false;
   }
   saveToStorage() {
     localStorage.setItem("ideas", JSON.stringify(ideas));
@@ -13,7 +13,11 @@ class Idea {
     localStorage.setItem("ideas", JSON.stringify(ideas));
   }
 
-  updateIdea(title, body) {
-   saveToStorage()
+  updateIdea() {
+      if (this.isStarred) {
+        this.isStarred = true;
+      } else {
+        this.isStarred = false;
+      }
+    }
   }
-}
