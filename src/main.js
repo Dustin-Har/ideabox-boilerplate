@@ -175,7 +175,7 @@ function commentBox() {
       <img class="star" src="${checkStarredValue(index)}" alt="star">
       <img class="delete" src="assets/delete.svg" alt="delete">
     </div>
-    <article class="idea-content">
+    <article class="comment-content">
       <h1 class="idea-title"><strong>${ideas[index].title}</strong></h1>
       <p class="idea-body">${ideas[index].body}</p>
     </article>
