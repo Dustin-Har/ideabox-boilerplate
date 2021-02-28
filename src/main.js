@@ -1,6 +1,6 @@
 //  Global Variables:
 var newIdea;
-var ideas = localStorage.getItem("ideas") ? JSON.parse(localStorage.getItem("ideas")) : [];
+var ideas = [];
 
 //  Query Selectors:
 var form = document.querySelector(".form");
@@ -12,18 +12,28 @@ var searchInput = document.querySelector("#searchInput");
 var star = document.querySelectorAll(".star");
 var commentIcon = document.querySelector("#commentIcon");
 var cardSection = document.querySelector("#cardSection");
-
 var showStarredBtn = document.querySelector("#showStarred");
-
-
 var filterOn = false;
-
 saveButton.disabled = true;
 
 form.addEventListener("keyup", activateSave);
 cardSection.addEventListener("click", deleteCard);
-document.addEventListener("DOMContentLoaded", displayCards);
+// document.addEventListener("DOMContentLoaded", displayCards);
 showStarredBtn.addEventListener("click", showStarredCards);
+window.addEventListener("onload", getStorage());
+
+function getStorage() {
+  var storedIdeas = localStorage.getItem("ideas");
+  ideas = JSON.parse(localStorage.getItem("ideas")) || [];
+  instanciateStorage(ideas);
+}
+
+function instanciateStorage(parsedStorage) {
+  for (var i=0; i<parsedStorage.length; i++) {
+    parsedStorage[i] = new Idea(parsedStorage[i].title, parsedStorage[i].body, parsedStorage[i].id, parsedStorage[i].isStarred)
+    localStorage.setItem("ideas", JSON.stringify(parsedStorage));
+  } displayCards();
+}
 
 function showStarredCards() {
   if (!filterOn) {
@@ -99,33 +109,16 @@ function changeStar(event) {
 function updateInstance(event) {
   for (var i = 0; i < ideas.length; i++) {
     if (parseInt(event.target.closest(".idea-card").id) === ideas[i].id) {
-      var focusIdea = new Idea(ideas[i].title, ideas[i].body);
-      if (ideas[i].isStarred === true) {
-        ideas[i].isStarred = false;
-        focusIdea.saveToStorage();
+      if (!ideas[i].isStarred) {
+        ideas[i].updateIdea(ideas[i].title, ideas[i].body, ideas[i].id, true);
+        ideas[i].saveToStorage();
       } else {
-        ideas[i].isStarred = true;
-        focusIdea.saveToStorage();
+        ideas[i].updateIdea(ideas[i].title, ideas[i].body, ideas[i].id, false);
+        ideas[i].saveToStorage();
       }
     }
   }
 }
-
-
-
-// line 102 - 110
-// var focusIdea = new Idea(ideas[i].id, ideas[i].title, ideas[i].body);
-// if (!ideas[i].isStarred) {
-//   console.log("isstarred is false");
-//   ideas[i].updateIdea(ideas[i].id, ideas[i].title, ideas[i].body, true);
-//   console.log(focusIdea);
-//   focusIdea.saveToStorage();
-// } else {
-//   focusIdea.updateIdea(ideas[i].id, ideas[i].title, ideas[i].body, false);
-//   focusIdea.saveToStorage();
-// }
-// }
-
 
 function checkStarredValue(index) {
   if (ideas[index].isStarred) {
