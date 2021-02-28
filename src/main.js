@@ -24,6 +24,7 @@ window.addEventListener("onload", getStorage());
 searchInput.addEventListener("keyup", inputSearch);
 
 
+
 function getStorage() {
   var storedIdeas = localStorage.getItem("ideas");
   ideas = JSON.parse(localStorage.getItem("ideas")) || [];
