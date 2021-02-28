@@ -18,9 +18,10 @@ saveButton.disabled = true;
 
 form.addEventListener("keyup", activateSave);
 cardSection.addEventListener("click", deleteCard);
-// document.addEventListener("DOMContentLoaded", displayCards);
 showStarredBtn.addEventListener("click", showStarredCards);
 window.addEventListener("onload", getStorage());
+searchInput.addEventListener("keyup", inputSearch);
+
 
 function getStorage() {
   var storedIdeas = localStorage.getItem("ideas");
@@ -60,6 +61,16 @@ function activateSave(e) {
     saveButton.disabled = true;
   } else if (!titleInput.value && !bodyInput.value) {
     saveButton.disabled = true;
+  }
+}
+
+function inputSearch() {
+  cardSection.innerHTML = "";
+  for (var i = 0; i < ideas.length; i++) {
+    if (ideas[i].title.toLowerCase().includes(searchInput.value.toLowerCase())
+      ||  ideas[i].body.toLowerCase().includes(searchInput.value.toLowerCase())) {
+      htmlCreator(i);
+    }
   }
 }
 
