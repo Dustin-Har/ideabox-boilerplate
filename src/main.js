@@ -12,10 +12,11 @@ var titleInput = document.querySelector("#titleInput");
 var bodyInput = document.querySelector("#bodyInput");
 var saveButton = document.querySelector("#saveButton");
 var searchInput = document.querySelector("#searchInput");
-var starActive = document.querySelector("#starActive");
-var starInactive = document.querySelector("#starInactive");
-var deleteActive = document.querySelector("#deleteActive");
-var deleteInactive = document.querySelector("#deleteInactive");
+var star = document.querySelectorAll(".star");
+// var starActive = document.querySelector("#starActive");
+// var starInactive = document.querySelector("#starInactive");
+// var deleteActive = document.querySelector("#deleteActive");
+// var deleteInactive = document.querySelector("#deleteInactive");
 var commentIcon = document.querySelector("#commentIcon");
 var cardSection = document.querySelector("#cardSection");
 
@@ -25,8 +26,8 @@ saveButton.disabled = true;
 //  Event Listeners:
 // showStarred.addEventListener("click", showStarred);
 // searchInput.addEventListener("keydown", filterIdeas);
-starInactive.addEventListener("click", activateStar);
-starActive.addEventListener("click", removeStar);
+// starInactive.addEventListener("click", activateStar);
+// starActive.addEventListener("click", removeStar);
 // deleteInactive.addEventListener("mousedown", activateDelete);
 // deleteActive.addEventListener("mouseup", removeIdea);
 form.addEventListener("keydown", activateSave);
@@ -54,13 +55,11 @@ function activateSave(e) {
   }
 }
 
-// function disableSaveBttn(){
-//   saveButton.disabled = true;
-//   saveButton.style.background = "#5356A4";
-//   saveButton.classList.remove("pointer");
-//   titleInput.value = "";
-//   bodyInput.value = "";
-// }
+function disableSaveBttn() {
+  saveButton.disabled = true;
+  titleInput.value = "";
+  bodyInput.value = "";
+}
 //
 // function enableSaveBttn(){
 //   saveButton.disabled = false;
@@ -71,28 +70,24 @@ function activateSave(e) {
 saveButton.addEventListener("click", function(event) {
   event.preventDefault();
   newIdea = new Idea(titleInput.value, bodyInput.value)
-  if (!ideas.includes(newIdea)) {
-    ideas.push(newIdea);
-    newIdea.saveToStorage();
-    saveButton.disable = true;
-    displayCards();
-    return newIdea;
-  } else {
-      window.alert("You already had that idea!")
-    }
+  ideas.push(newIdea);
+  newIdea.saveToStorage();
+  disableSaveBttn()
+  displayCards();
+  return newIdea;
   }
 )
 
 //change grey star to red star
 //have card save in Local storage.
-function activateStar() {
-  togglePictures(starInactive, starActive)
-
-}
-
-function removeStar() {
-  togglePictures(starActive, starInactive);
-}
+// function activateStar() {
+//   togglePictures(starInactive, starActive)
+//
+// }
+//
+// function removeStar() {
+//   togglePictures(starActive, starInactive);
+// }
 
 //
 // cardSection.addEventListener("mousedown", activateDelete);
@@ -106,7 +101,7 @@ function removeStar() {
 
 //DELETE: desired card from screen and local storage
 function deleteCard() {
-  if (event.target.classList.value === "delete-inactive") {
+  if (event.target.classList.value === "delete") {
     for (i = 0; i < ideas.length; i++) {
       if (parseInt(event.target.closest(".idea-card").id) === ideas[i].id) {
         var focusIdea = new Idea(ideas[i].title, ideas[i].body);
@@ -118,34 +113,70 @@ function deleteCard() {
   }
 }
 
+// function togglePictures(pic1, pic2) {
+//   pic1.hidden = true;
+//   pic2.hidden = false;
+// }
 
-
-function togglePictures(pic1, pic2) {
-  pic1.hidden = true;
-  pic2.hidden = false;
+cardSection.addEventListener('click', changeStar);
+function changeStar(event) {
+  if (event.target.classList.contains("star")) {
+    if (event.target.src.includes("/assets/star.svg")) {
+      event.target.src = "assets/star-active.svg";
+      updateInstance(event);
+    } else {
+      event.target.src = "assets/star.svg";
+      updateInstance(event);
+    }
+  }
 }
 
-function displayCards(){
+function updateInstance(event) {
+  for (var i = 0; i<ideas.length; i++) {
+    if (parseInt(event.target.closest(".idea-card").id) === ideas[i].id) {
+      var focusIdea = new Idea(ideas[i].title, ideas[i].body);
+      if (ideas[i].isStarred === true) {
+      ideas[i].isStarred = false;
+      focusIdea.saveToStorage();
+    } else {
+      ideas[i].isStarred = true;
+      focusIdea.saveToStorage();
+    }
+  }
+  }
+}
+
+function checkStarredValue(index) {
+    if (ideas[index].isStarred) {
+      return "assets/star-active.svg"
+    } else {
+      return "assets/star.svg"
+    }
+  }
+
+function displayCards() {
   cardSection.innerHTML = "";
-  for(var i = 0; i < ideas.length; i++){
+  for (var i = 0; i < ideas.length; i++) {
+  htmlCreator(i);
+}
+}
+
+function htmlCreator(index) {
   cardSection.innerHTML += `
-  <div class="idea-card" id=${ideas[i].id}>
+  <div class="idea-card" id=${ideas[index].id}>
     <div class="card-controls">
-      <img class="star-inactive" id="starInactive" src="assets/star.svg" alt="star">
-      <img class="star-active" id="starActive" src="assets/star-active.svg" alt="active star" hidden>
-      <img class="delete-inactive" id="deleteInactive" src="assets/delete.svg" alt="delete">
-      <img class="delete-active" id="deleteActive" src="assets/delete-active.svg" alt="active delete" hidden>
+      <img class="star" src="${checkStarredValue(index)}" alt="star">
+      <img class="delete" src="assets/delete.svg" alt="delete">
     </div>
     <article class="idea-content">
-      <h1 class="idea-title"><strong>${ideas[i].title}</strong></h1>
-      <p class="idea-body">${ideas[i].body}</p>
+      <h1 class="idea-title"><strong>${ideas[index].title}</strong></h1>
+      <p class="idea-body">${ideas[index].body}</p>
     </article>
     <div class="comment-body">
       <img class="comment-icon" id="commentIcon" src="assets/comment.svg" alt="comment">
       <h2 class="comment" id="commentIcon">Comment</h2>
     </div>
   </div>`
-  }
 }
 
 
