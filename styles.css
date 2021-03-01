@@ -92,9 +92,6 @@ body {
   background-color: #5356A4;
 }
 
-.delete {
-  width: 15%;
-}
 
 .comment-content {
   color: #1F1F3D;
@@ -104,7 +101,7 @@ body {
 .comment-title {
   font-weight: bold;
   font-size: 169%;
-  margin-top: 4%; 
+  margin-top: 4%;
 }
 
 .comment-para {
@@ -168,7 +165,8 @@ body {
   box-sizing: border-box;
 }
 
-.save-button {
+.save-button,
+.save-comment {
   width: 41%;
   height: 9em;
   font-size: 18pt;

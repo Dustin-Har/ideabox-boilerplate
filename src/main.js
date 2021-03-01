@@ -8,6 +8,7 @@ var showStarred = document.querySelector("#showStarred");
 var titleInput = document.querySelector("#titleInput");
 var bodyInput = document.querySelector("#bodyInput");
 var saveButton = document.querySelector("#saveButton");
+var saveComment = document.querySelector("#saveComment");
 var searchInput = document.querySelector("#searchInput");
 var star = document.querySelectorAll(".star");
 var commentIcon = document.querySelector("#commentIcon");
@@ -19,6 +20,7 @@ saveButton.disabled = true;
 
 form.addEventListener("keyup", activateSave);
 cardSection.addEventListener("click", deleteCard);
+cardSection.addEventListener("click", toggleComment)
 showStarredBtn.addEventListener("click", showStarredCards);
 window.addEventListener("onload", getStorage());
 searchInput.addEventListener("keyup", inputSearch);
@@ -32,10 +34,11 @@ function getStorage() {
 }
 
 function instanciateStorage(parsedStorage) {
-  for (var i=0; i<parsedStorage.length; i++) {
+  for (var i = 0; i < parsedStorage.length; i++) {
     parsedStorage[i] = new Idea(parsedStorage[i].title, parsedStorage[i].body, parsedStorage[i].id, parsedStorage[i].isStarred)
     localStorage.setItem("ideas", JSON.stringify(parsedStorage));
-  } displayCards();
+    displayCards();
+  }
 }
 
 function showStarredCards() {
@@ -69,8 +72,8 @@ function activateSave(e) {
 function inputSearch() {
   cardSection.innerHTML = "";
   for (var i = 0; i < ideas.length; i++) {
-    if (ideas[i].title.toLowerCase().includes(searchInput.value.toLowerCase())
-      ||  ideas[i].body.toLowerCase().includes(searchInput.value.toLowerCase())) {
+    if (ideas[i].title.toLowerCase().includes(searchInput.value.toLowerCase()) ||
+      ideas[i].body.toLowerCase().includes(searchInput.value.toLowerCase())) {
       htmlCreator(i);
     }
   }
@@ -141,6 +144,22 @@ function checkStarredValue(index) {
   }
 }
 
+function toggleComment() {
+  if (event.target.classList.value === "comment-icon") {
+    for (var i = 0; i < ideas.length; i++) {
+      if (parseInt(event.target.closest(".idea-card").id) === ideas[i].id) {
+        saveButton.hidden = true;
+        saveComment.hidden = false;
+        // commentForm.hidden = false;
+      }
+    }
+  }
+}
+
+function makeComment() {
+
+}
+
 function displayCards() {
   showStarredBtn.innerText = "Show Starred Ideas";
   filterOn = false;
@@ -179,5 +198,7 @@ function commentBox() {
       <h1 class="idea-title"><strong>${ideas[index].title}</strong></h1>
       <p class="idea-body">${ideas[index].body}</p>
     </article>
-  </div>`
+  </div>`;
+  posterForm.hidden = false;
+  form.hidden = true;
 }
