@@ -1,6 +1,6 @@
 //  Global Variables:
-var newIdea;
 var ideas = [];
+var comments = [];
 
 //  Query Selectors:
 var form = document.querySelector(".form");
@@ -8,7 +8,7 @@ var showStarred = document.querySelector("#showStarred");
 var titleInput = document.querySelector("#titleInput");
 var bodyInput = document.querySelector("#bodyInput");
 var saveButton = document.querySelector("#saveButton");
-var saveComment = document.querySelector("#saveComment");
+var saveCommentBtn = document.querySelector("#saveCommentBtn");
 var searchInput = document.querySelector("#searchInput");
 var star = document.querySelectorAll(".star");
 var commentIcon = document.querySelector("#commentIcon");
@@ -17,14 +17,26 @@ var showStarredBtn = document.querySelector("#showStarred");
 var commentSection = document.querySelector("#commentSection")
 var filterOn = false;
 saveButton.disabled = true;
+saveCommentBtn.disabled = true;
 
-form.addEventListener("keyup", activateSave);
+form.addEventListener("input", activateSave);
+// form.addEventListener("keyup", saveComment);
 cardSection.addEventListener("click", deleteCard);
 cardSection.addEventListener("click", toggleComment)
 showStarredBtn.addEventListener("click", showStarredCards);
 window.addEventListener("onload", getStorage());
 searchInput.addEventListener("keyup", inputSearch);
+saveCommentBtn.addEventListener("click", saveComment);
 
+saveButton.addEventListener("click", function(event) {
+  event.preventDefault();
+  newIdea = new Idea(titleInput.value, bodyInput.value)
+  ideas.push(newIdea);
+  newIdea.saveToStorage();
+  disableSaveBttn()
+  displayCards();
+  return newIdea;
+})
 
 
 function getStorage() {
@@ -62,10 +74,13 @@ function activateSave(e) {
   var key = e.key;
   if (titleInput.value && bodyInput.value) {
     saveButton.disabled = false;
+    saveCommentBtn.disabled = false;
   } else if (key === "Backspace" || key === "Delete") {
     saveButton.disabled = true;
-  } else if (!titleInput.value && !bodyInput.value) {
+    saveCommentBtn.disabled = true;
+  }if (!titleInput.value && !bodyInput.value) {
     saveButton.disabled = true;
+    saveCommentBtn.disabled = true;
   }
 }
 
@@ -81,19 +96,12 @@ function inputSearch() {
 
 function disableSaveBttn() {
   saveButton.disabled = true;
+  saveButton.hidden = false;
+  saveCommentBtn.hidden = true;
   titleInput.value = "";
   bodyInput.value = "";
 }
 
-saveButton.addEventListener("click", function(event) {
-  event.preventDefault();
-  newIdea = new Idea(titleInput.value, bodyInput.value)
-  ideas.push(newIdea);
-  newIdea.saveToStorage();
-  disableSaveBttn()
-  displayCards();
-  return newIdea;
-})
 
 function deleteCard() {
   if (event.target.classList.value === "delete") {
@@ -149,15 +157,23 @@ function toggleComment() {
     for (var i = 0; i < ideas.length; i++) {
       if (parseInt(event.target.closest(".idea-card").id) === ideas[i].id) {
         saveButton.hidden = true;
-        saveComment.hidden = false;
-        // commentForm.hidden = false;
+        saveCommentBtn.hidden = false;
+        titleInput.value = "";
+        bodyInput.value = "";
       }
     }
   }
 }
 
-function makeComment() {
 
+function saveComment() {
+  event.preventDefault();
+  newComment = new Comment(titleInput.value, bodyInput.value)
+  comments.push(newComment);
+  newComment.saveToStorage();
+  disableSaveBttn()
+  displayCards();
+  return newComment;
 }
 
 function displayCards() {

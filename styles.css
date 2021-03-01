@@ -185,6 +185,10 @@ body {
   cursor: auto;
 }
 
+#saveCommentBtn:disabled {
+  background-color: #5356A4;
+  cursor: auto;
+}  
 
 .search-bar {
   display: flex;
