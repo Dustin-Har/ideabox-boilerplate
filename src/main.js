@@ -52,8 +52,8 @@ function getStorage() {
 function instantiateStorage(parsedStorage) {
   for (var i = 0; i < parsedStorage.length; i++) {
     parsedStorage[i] = new Idea(parsedStorage[i].title, parsedStorage[i].body, parsedStorage[i].id, parsedStorage[i].isStarred, parsedStorage[i].comments)
-    // parsedStorage[i].saveToStorage();
-    localStorage.setItem("ideas", JSON.stringify(parsedStorage));
+    parsedStorage[i].saveToStorage();
+    // localStorage.setItem("ideas", JSON.stringify(parsedStorage));
     displayCards();
   }
 }
@@ -201,11 +201,12 @@ function toggleComment() {
 
 function focusCard(index) {
   for (var i = 0; i < ideas.length; i++) {
-    if (index) {
-      commentView();
-      displayComments(index);
-      htmlCreator(index);
-    } else if (parseInt(event.target.closest(".idea-card").id) === ideas[i].id) {
+    // if (index) {
+    //   commentView();
+    //   displayComments(index);
+    //   htmlCreator(index);
+    // } else
+     if (parseInt(event.target.closest(".idea-card").id) === ideas[i].id) {
       commentView();
       displayComments(i);
       htmlCreator(i);
@@ -238,16 +239,13 @@ function cardView() {
 
 function saveComment(event) {
   event.preventDefault();
+  console.log(event);
   for (var i = 0; i < ideas.length; i++) {
-    if (parseInt(event.path[5].cardSection.childNodes[1].id) === ideas[i].id) {
+    if (parseInt(event.path[5].cardSection.children[i].id) === ideas[i].id) {
       ideas[i].addComment(ideas[i].id, titleInput.value, bodyInput.value, false);
       ideas[i].saveToStorage();
   }
-  // disableSaveBttn();
-  resetForm();
-  cardView();
-  displayCards();
-}
+}cardView();
 }
 
 function resetForm() {
