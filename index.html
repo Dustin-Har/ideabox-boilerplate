@@ -12,7 +12,7 @@
   <nav class="side-bar">
     <h1>IdeaBox</h1>
     <div class="filter">
-      <h2>Filter Starred Ideas</h2>
+      <h2 id="filterHeader">Filter Starred Ideas</h2>
       <button class="show-starred-ideas" id="showStarred">Show Starred Ideas</button>
     </div>
     <section class="comment-section" id=commentSection >
@@ -58,7 +58,7 @@
     <label class="user-comment-label">Body</label>
     <textarea class="user-comment" id="bodyInput" type="text" style="font-size:30px;" maxlength="280"></textarea>
     <button class="save-button" id="saveButton" disabled>Save</button>
-    <button class="save-comment" id="saveCommentBtn" hidden disabled>Save Comment</button>
+    <button class="save-comment" id="saveCommentBtn" hidden disabled>Add Comment</button>
     <span class="search-bar" id="search">
       <img class="search-icon" src="assets/search.svg" alt="search">
       <input class="search" id="searchInput" type="text" placeholder="Search ideas" style="font-size:30px;">
@@ -72,8 +72,8 @@
 
   </section>
 
-  <script src="./src/idea.js"></script>
   <script src="./src/comment.js"></script>
+  <script src="./src/idea.js"></script>
   <script src="./src/main.js"></script>
 
   </script>

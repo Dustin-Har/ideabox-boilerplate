@@ -7,6 +7,7 @@ var search = document.querySelector("#search");
 var searchInput = document.querySelector("#searchInput");
 var showStarredBtn = document.querySelector("#showStarred");
 var titleInput = document.querySelector("#titleInput");
+var filterHeader = document.querySelector("#filterHeader");
 
 window.addEventListener('keyup', keyupHandler);
 window.addEventListener('click', clickHandler);
@@ -34,7 +35,7 @@ function clickHandler(event) {
   if (event.target.classList.value === "show-starred-ideas") {
     showStarredCards();
   }
-  if (event.target.classList.value === "save-comment") {
+  if (event.target.classList.contains("save-comment")) {
     saveComment(event);
   }
   if (event.target.classList.value === "save-button") {
@@ -114,10 +115,12 @@ function showAllCards() {
     changeButtonText();
     displayCards();
     commentSection.innerHTML = "";
+    filterHeader.innerText = "Filter Starred Ideas"
   }
 }
 
 function showStarredCards() {
+
   if (showStarredBtn.innerText === "Show Starred Ideas") {
     changeButtonText();
     cardSection.innerHTML = "";
@@ -188,14 +191,19 @@ function checkStarredValue(index) {
 function toggleComment() {
   if (search.classList.contains("hidden")) {
     cardView();
+    filterHeader.innerText = "Filter Starred Ideas"
     return;
   }
   focusCard();
 }
 
-function focusCard() {
+function focusCard(index) {
   for (var i = 0; i < ideas.length; i++) {
-    if (parseInt(event.target.closest(".idea-card").id) === ideas[i].id) {
+    if (index) {
+      commentView();
+      displayComments(index);
+      htmlCreator(index);
+    } else if (parseInt(event.target.closest(".idea-card").id) === ideas[i].id) {
       commentView();
       displayComments(i);
       htmlCreator(i);
@@ -209,6 +217,8 @@ function commentView() {
   saveCommentBtn.disabled = true;
   saveCommentBtn.classList.add("comment-view");
   search.classList.add("hidden");
+  filterHeader.innerText = "Comment View";
+  changeButtonText();
   resetForm();
   cardSection.innerHTML = "";
 }
@@ -218,6 +228,7 @@ function cardView() {
   saveCommentBtn.hidden = true;
   saveCommentBtn.classList.remove("comment-view");
   search.classList.remove("hidden");
+  filterHeader.innerText = "Show Starred Ideas"
   resetForm();
   displayCards();
 }
@@ -225,16 +236,22 @@ function cardView() {
 function saveComment(event) {
   event.preventDefault();
   console.log(event);
-  newComment.saveToStorage();
-  disableSaveBttn()
+  for (var i = 0; i < ideas.length; i++) {
+    if (parseInt(event.path[5].cardSection.childNodes[1].id) === ideas[i].id) {
+      ideas[i].addComment(ideas[i].id, titleInput.value, bodyInput.value, false);
+  }
+  // disableSaveBttn();
+  resetForm();
+  cardView();
   displayCards();
-  return newComment;
+}
 }
 
 function resetForm() {
   titleInput.value = "";
   bodyInput.value = "";
   saveButton.disabled = true;
+  saveCommentBtn.disabled = true;
 }
 
 function htmlCreator(index) {

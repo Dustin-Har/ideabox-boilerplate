@@ -47,8 +47,9 @@ class Idea {
   }
 
   addComment(id, commentTitle, commentBody, star) {
-    var newComment = new Comment(this.id, commentTitle, commentBody, star);
+    var newComment = new Comment(id, commentTitle, commentBody, star);
     this.comments.push(newComment);
+    newComment.saveToStorage();
   }
 
 }
