@@ -1,96 +1,66 @@
-//  Global Variables:
 var ideas = [];
-var comments = [];
-
-//  Query Selectors:
-var form = document.querySelector(".form");
-var showStarred = document.querySelector("#showStarred");
-var titleInput = document.querySelector("#titleInput");
 var bodyInput = document.querySelector("#bodyInput");
-var saveButton = document.querySelector("#saveButton");
-var saveCommentBtn = document.querySelector("#saveCommentBtn");
-var searchInput = document.querySelector("#searchInput");
-var star = document.querySelectorAll(".star");
-var commentIcon = document.querySelector("#commentIcon");
 var cardSection = document.querySelector("#cardSection");
-var showStarredBtn = document.querySelector("#showStarred");
 var commentSection = document.querySelector("#commentSection")
-var filterOn = false;
-saveButton.disabled = true;
-saveCommentBtn.disabled = true;
+var form = document.querySelector("#form");
+var searchInput = document.querySelector(".search");
+var showStarredBtn = document.querySelector("#showStarred");
+var titleInput = document.querySelector("#titleInput");
 
-form.addEventListener("input", activateSave);
-// form.addEventListener("keyup", saveComment);
-cardSection.addEventListener("click", deleteCard);
-cardSection.addEventListener("click", toggleComment)
-showStarredBtn.addEventListener("click", showStarredCards);
-window.addEventListener("onload", getStorage());
-searchInput.addEventListener("keyup", inputSearch);
-saveCommentBtn.addEventListener("click", saveComment);
+window.addEventListener('keyup', keyupHandler);
+window.addEventListener('click', clickHandler);
+window.addEventListener('onload', getStorage());
 
-saveButton.addEventListener("click", function(event) {
-  event.preventDefault();
-  newIdea = new Idea(titleInput.value, bodyInput.value)
-  ideas.push(newIdea);
-  newIdea.saveToStorage();
-  disableSaveBttn()
-  displayCards();
-  return newIdea;
-})
+function keyupHandler(event) {
+  if (event.target === titleInput || event.target === bodyInput) {
+    activateSave(event);
+  }
+  if (event.target.classList.contains('search')) {
+    inputSearch(event);
+  }
+}
 
+function clickHandler(event) {
+  if (event.target.classList.contains("star")) {
+    changeStar(event);
+  }
+  if (event.target.classList.value === "delete") {
+    deleteCard();
+  }
+  if (event.target.classList.value === "comment-icon") {
+    toggleComment();
+  }
+  if (event.target.classList.value === "show-starred-ideas") {
+    showStarredCards();
+  }
+  if (event.target.classList.value === "save-comment") {
+    saveComment(event);
+  }
+  if (event.target.classList.value === "save-button") {
+    saveCard(event);
+  }
+}
 
 function getStorage() {
   var storedIdeas = localStorage.getItem("ideas");
   ideas = JSON.parse(localStorage.getItem("ideas")) || [];
-  instanciateStorage(ideas);
+  instantiateStorage(ideas);
 }
 
-function instanciateStorage(parsedStorage) {
+function instantiateStorage(parsedStorage) {
   for (var i = 0; i < parsedStorage.length; i++) {
     parsedStorage[i] = new Idea(parsedStorage[i].title, parsedStorage[i].body, parsedStorage[i].id, parsedStorage[i].isStarred)
+    // parsedStorage[i].saveToStorage();
     localStorage.setItem("ideas", JSON.stringify(parsedStorage));
     displayCards();
   }
 }
 
-function showStarredCards() {
-  if (!filterOn) {
-    cardSection.innerHTML = "";
-    filterOn = true;
-    showStarredBtn.innerText = "Show All Ideas"
-    for (var i = 0; i < ideas.length; i++) {
-      if (ideas[i].isStarred) {
-        htmlCreator(i);
-      }
-    }
-  } else {
-    filterOn = false;
-    showStarredBtn.innerText = "Show Starred Ideas";
-    displayCards();
-  }
-}
-
-function activateSave(e) {
-  var key = e.key;
-  if (titleInput.value && bodyInput.value) {
-    saveButton.disabled = false;
-    saveCommentBtn.disabled = false;
-  } else if (key === "Backspace" || key === "Delete") {
-    saveButton.disabled = true;
-    saveCommentBtn.disabled = true;
-  }if (!titleInput.value && !bodyInput.value) {
-    saveButton.disabled = true;
-    saveCommentBtn.disabled = true;
-  }
-}
-
-function inputSearch() {
+function displayCards() {
+  showStarredBtn.innerText = "Show Starred Ideas";
   cardSection.innerHTML = "";
   for (var i = 0; i < ideas.length; i++) {
-    if (ideas[i].title.toLowerCase().includes(searchInput.value.toLowerCase()) ||
-      ideas[i].body.toLowerCase().includes(searchInput.value.toLowerCase())) {
-      htmlCreator(i);
-    }
+    htmlCreator(i);
   }
 }
 
@@ -102,31 +72,88 @@ function disableSaveBttn() {
   bodyInput.value = "";
 }
 
+function activateSave(e) {
+  var key = e.key;
+  if (titleInput.value && bodyInput.value) {
+    saveButton.disabled = false;
+    saveCommentBtn.disabled = false;
+  } else {
+    saveButton.disabled = true;
+    saveCommentBtn.disabled = true;
+  }
+}
 
-function deleteCard() {
-  if (event.target.classList.value === "delete") {
-    for (i = 0; i < ideas.length; i++) {
-      if (parseInt(event.target.closest(".idea-card").id) === ideas[i].id) {
-        var focusIdea = new Idea(ideas[i].title, ideas[i].body);
-        ideas.splice(i, 1);
-        focusIdea.deleteFromStorage();
-        displayCards();
-      }
+function saveCard(event) {
+  event.preventDefault();
+  newIdea = new Idea(titleInput.value, bodyInput.value)
+  ideas.push(newIdea);
+  newIdea.saveToStorage();
+  disableSaveBttn()
+  displayCards();
+  return newIdea;
+}
+
+function changeView() {
+  searchInput.value = "";
+  if (showStarredBtn.innerText === "Show Starred Ideas") {
+    showStarredBtn.innerText = "Show All Ideas";
+  } else {
+    showStarredBtn.innerText = "Show Starred Ideas";
+  }
+}
+
+function showAllCards() {
+  if (showStarredBtn.innerText === "Show All Ideas") {
+    changeView();
+    displayCards();
+  }
+}
+
+function showStarredCards() {
+  if (showStarredBtn.innerText === "Show Starred Ideas") {
+  changeView();
+  cardSection.innerHTML = "";
+    for (var i = 0; i < ideas.length; i++) {
+      if (ideas[i].isStarred) {
+        htmlCreator(i);
+    }
+  }
+} else {
+  showAllCards();
+}
+}
+
+function inputSearch() {
+  if (searchInput.innerText === "") {
+    showStarredBtn.innerText = "Show Starred Ideas";
+  }
+  cardSection.innerHTML = "";
+  for (var i = 0; i < ideas.length; i++) {
+    if (ideas[i].title.toLowerCase().includes(searchInput.value.toLowerCase()) ||
+    ideas[i].body.toLowerCase().includes(searchInput.value.toLowerCase())) {
+      htmlCreator(i);
     }
   }
 }
 
-cardSection.addEventListener('click', changeStar);
+function deleteCard() {
+  for (var i = 0; i < ideas.length; i++) {
+    if (parseInt(event.target.closest(".idea-card").id) === ideas[i].id) {
+      var focusIdea = new Idea(ideas[i].title, ideas[i].body);
+      ideas.splice(i, 1);
+      focusIdea.deleteFromStorage();
+      displayCards();
+    }
+  }
+}
 
 function changeStar(event) {
-  if (event.target.classList.contains("star")) {
     if (event.target.src.includes("/assets/star.svg")) {
       event.target.src = "assets/star-active.svg";
       updateInstance(event);
     } else {
       event.target.src = "assets/star.svg";
       updateInstance(event);
-    }
   }
 }
 
@@ -153,20 +180,17 @@ function checkStarredValue(index) {
 }
 
 function toggleComment() {
-  if (event.target.classList.value === "comment-icon") {
-    for (var i = 0; i < ideas.length; i++) {
-      if (parseInt(event.target.closest(".idea-card").id) === ideas[i].id) {
-        saveButton.hidden = true;
-        saveCommentBtn.hidden = false;
-        titleInput.value = "";
-        bodyInput.value = "";
-      }
+  for (var i = 0; i < ideas.length; i++) {
+    if (parseInt(event.target.closest(".idea-card").id) === ideas[i].id) {
+      saveButton.hidden = true;
+      saveCommentBtn.hidden = false;
+      titleInput.value = "";
+      bodyInput.value = "";
     }
   }
 }
 
-
-function saveComment() {
+function saveComment(event) {
   event.preventDefault();
   newComment = new Comment(titleInput.value, bodyInput.value)
   comments.push(newComment);
@@ -174,15 +198,6 @@ function saveComment() {
   disableSaveBttn()
   displayCards();
   return newComment;
-}
-
-function displayCards() {
-  showStarredBtn.innerText = "Show Starred Ideas";
-  filterOn = false;
-  cardSection.innerHTML = "";
-  for (var i = 0; i < ideas.length; i++) {
-    htmlCreator(i);
-  }
 }
 
 function htmlCreator(index) {
@@ -203,7 +218,7 @@ function htmlCreator(index) {
   </div>`
 }
 
-function commentBox() {
+function commentBox(index) {
   cardSection.innerHTML += `
   <div class="commentArea" id=${ideas[index].id}>
     <div class="comment-controls">

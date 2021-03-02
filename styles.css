@@ -67,14 +67,20 @@ body {
 
 /*~~~~~Comment Secion~~~~~*/
 .comment-section {
+  margin-top: 2em;
   overflow: auto;
   height: 34em;
   background-color: #1F1F3D;
+  display:flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  /* flex-direction: row; */
 }
 
 .commentArea {
   background-color: #FFFFFF;
-  height: 16em;
+  height: 11em;
+  width: 90%;
   border-top: 2px solid #1F1F3D;
   border-bottom: 2px solid #1F1F3D;
 }
@@ -96,16 +102,17 @@ body {
 .comment-content {
   color: #1F1F3D;
   margin-left: 6%;
+  font-size: 16px;
 }
 
 .comment-title {
-  font-weight: bold;
-  font-size: 169%;
+  /* font-size: 1px; */
+  /* font-size: 169%; */
   margin-top: 4%;
 }
 
 .comment-para {
-  font-size: 169%;
+  /* font-size: 169%; */
   overflow: auto;
   display: flex;
   flex-wrap: wrap;
@@ -188,7 +195,7 @@ body {
 #saveCommentBtn:disabled {
   background-color: #5356A4;
   cursor: auto;
-}  
+}
 
 .search-bar {
   display: flex;

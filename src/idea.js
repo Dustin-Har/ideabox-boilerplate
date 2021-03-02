@@ -4,6 +4,7 @@ class Idea {
     this.title = title;
     this.body = body;
     this.isStarred = star || false;
+    this.comments = [];
   }
   saveToStorage() {
     localStorage.setItem("ideas", JSON.stringify(ideas));
@@ -13,10 +14,15 @@ class Idea {
     localStorage.setItem("ideas", JSON.stringify(ideas));
   }
 
-  updateIdea(title, body, id, star) {
+  updateIdea(title, body, id, star, comments) {
     this.id = id;
     this.title = title;
     this.body = body;
     this.isStarred = star;
-    }
   }
+
+  addComment(newComment) {
+    this.comments.push(newComment)
+  }
+
+}

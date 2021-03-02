@@ -22,20 +22,43 @@
           <img class="delete" src="assets/delete.svg" alt="delete">
         </div>
         <article class="comment-content">
-          <h1 class="comment-title"><strong>Hello</strong></h1>
-          <p class="comment-para">Goodbye dbnmb w hjdbwn  jfbdkjfb jkjdbw</p>
+          <h1 class="comment-title"><strong>Comment 1</strong></h1>
+          <p class="comment-para">What a great idea!</p>
         </article>
       </div>
+
+      <div class="commentArea" id=${ideas[index].id}>
+        <div class="comment-controls">
+          <img class="star" src="assets/star.svg" alt="star">
+          <img class="delete" src="assets/delete.svg" alt="delete">
+        </div>
+        <article class="comment-content">
+          <h1 class="comment-title"><strong>Comment 2</strong></h1>
+          <p class="comment-para">What a bad idea!</p>
+        </article>
+      </div>
+
+      <div class="commentArea" id=${ideas[index].id}>
+        <div class="comment-controls">
+          <img class="star" src="assets/star.svg" alt="star">
+          <img class="delete" src="assets/delete.svg" alt="delete">
+        </div>
+        <article class="comment-content">
+          <h1 class="comment-title"><strong>Comment 3</strong></h1>
+          <p class="comment-para">LMFAO</p>
+        </article>
+      </div>
+
     </section>
   </nav>
 
-  <form class="form">
+  <form class="form" id="form">
     <label class="user-title-label">Title</label>
     <input class="user-title" id="titleInput" type="text" style="font-size:30px;" maxlength="20">
     <label class="user-comment-label">Body</label>
     <textarea class="user-comment" id="bodyInput" type="text" style="font-size:30px;" maxlength="280"></textarea>
-    <button class="save-button" id="saveButton">Save</button>
-    <button class="save-comment" id="saveCommentBtn" hidden>Save Comment</button>
+    <button class="save-button" id="saveButton" disabled>Save</button>
+    <button class="save-comment" id="saveCommentBtn" hidden disabled>Save Comment</button>
     <span class="search-bar">
       <img class="search-icon" src="assets/search.svg" alt="search">
       <input class="search" id="searchInput" type="text" placeholder="Search ideas" style="font-size:30px;">
