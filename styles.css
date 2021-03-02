@@ -1,11 +1,4 @@
-/*
-Need cursor styling when conditions are met in js function
-Need hidden !important styling for later use of icon switches and search filtering
-*/
-/* Add Hidden */
-/*overflow: auto;*/
 * {
-  /* border: solid 2px blue; */
   font-family: "Open Sans";
 }
 
@@ -308,10 +301,11 @@ body {
   font-size: 85%;
 }
 
-.hidden {
-  display: none!important;
-}
 .comment-view {
   margin-top: 20px;
   margin-bottom: 35px;
+}
+
+.hidden {
+  display: none!important;
 }
