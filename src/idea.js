@@ -4,7 +4,32 @@ class Idea {
     this.title = title;
     this.body = body;
     this.isStarred = star || false;
-    this.comments = [];
+    this.comments = [
+      // {
+      //   id: this.id,
+      //   title: "Fake Title",
+      //   body: "Big long fake body keeps going many text and text",
+      //   isStarred: false,
+      // },
+      // {
+      //   id: this.id,
+      //   title: "Fake Title 2",
+      //   body: "Big long fake body keeps going many text and textsssssssss",
+      //   isStarred: false,
+      // },
+      // {
+      //   id: this.id,
+      //   title: "Fake Title",
+      //   body: "Big long fake body keeps going many text and text",
+      //   isStarred: false,
+      // },
+      // {
+      //   id: this.id,
+      //   title: "Fake Title 2",
+      //   body: "Big long fake body keeps going many text and textsssssssss",
+      //   isStarred: false,
+      // }
+    ];
   }
   saveToStorage() {
     localStorage.setItem("ideas", JSON.stringify(ideas));
@@ -21,8 +46,9 @@ class Idea {
     this.isStarred = star;
   }
 
-  addComment(newComment) {
-    this.comments.push(newComment)
+  addComment(id, commentTitle, commentBody, star) {
+    var newComment = new Comment(this.id, commentTitle, commentBody, star);
+    this.comments.push(newComment);
   }
 
 }

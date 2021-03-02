@@ -16,7 +16,7 @@
       <button class="show-starred-ideas" id="showStarred">Show Starred Ideas</button>
     </div>
     <section class="comment-section" id=commentSection >
-      <div class="commentArea" id=${ideas[index].id}>
+      <!-- <div class="commentArea" id=${ideas[index].id}>
         <div class="comment-controls">
           <img class="star" src="assets/star.svg" alt="star">
           <img class="delete" src="assets/delete.svg" alt="delete">
@@ -47,7 +47,7 @@
           <h1 class="comment-title"><strong>Comment 3</strong></h1>
           <p class="comment-para">LMFAO</p>
         </article>
-      </div>
+      </div> -->
 
     </section>
   </nav>
@@ -59,7 +59,7 @@
     <textarea class="user-comment" id="bodyInput" type="text" style="font-size:30px;" maxlength="280"></textarea>
     <button class="save-button" id="saveButton" disabled>Save</button>
     <button class="save-comment" id="saveCommentBtn" hidden disabled>Save Comment</button>
-    <span class="search-bar">
+    <span class="search-bar" id="search">
       <img class="search-icon" src="assets/search.svg" alt="search">
       <input class="search" id="searchInput" type="text" placeholder="Search ideas" style="font-size:30px;">
     </span>

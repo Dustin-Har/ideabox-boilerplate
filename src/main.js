@@ -1,9 +1,10 @@
 var ideas = [];
 var bodyInput = document.querySelector("#bodyInput");
 var cardSection = document.querySelector("#cardSection");
-var commentSection = document.querySelector("#commentSection")
+var commentSection = document.querySelector("#commentSection");
 var form = document.querySelector("#form");
-var searchInput = document.querySelector(".search");
+var search = document.querySelector("#search");
+var searchInput = document.querySelector("#searchInput");
 var showStarredBtn = document.querySelector("#showStarred");
 var titleInput = document.querySelector("#titleInput");
 
@@ -56,20 +57,26 @@ function instantiateStorage(parsedStorage) {
   }
 }
 
+function displayComments(index) {
+  commentSection.innerHTML = "";
+  for (var i = 0; i < ideas[index].comments.length; i++) {
+    popCommentBox(i, index);
+  }
+}
+
 function displayCards() {
   showStarredBtn.innerText = "Show Starred Ideas";
   cardSection.innerHTML = "";
+  commentSection.innerHTML = "";
   for (var i = 0; i < ideas.length; i++) {
     htmlCreator(i);
   }
 }
 
 function disableSaveBttn() {
-  saveButton.disabled = true;
   saveButton.hidden = false;
   saveCommentBtn.hidden = true;
-  titleInput.value = "";
-  bodyInput.value = "";
+  resetForm();
 }
 
 function activateSave(e) {
@@ -93,7 +100,7 @@ function saveCard(event) {
   return newIdea;
 }
 
-function changeView() {
+function changeButtonText() {
   searchInput.value = "";
   if (showStarredBtn.innerText === "Show Starred Ideas") {
     showStarredBtn.innerText = "Show All Ideas";
@@ -104,15 +111,16 @@ function changeView() {
 
 function showAllCards() {
   if (showStarredBtn.innerText === "Show All Ideas") {
-    changeView();
+    changeButtonText();
     displayCards();
+    commentSection.innerHTML = "";
   }
 }
 
 function showStarredCards() {
   if (showStarredBtn.innerText === "Show Starred Ideas") {
-  changeView();
-  cardSection.innerHTML = "";
+    changeButtonText();
+    cardSection.innerHTML = "";
     for (var i = 0; i < ideas.length; i++) {
       if (ideas[i].isStarred) {
         htmlCreator(i);
@@ -123,10 +131,8 @@ function showStarredCards() {
 }
 }
 
+
 function inputSearch() {
-  if (searchInput.innerText === "") {
-    showStarredBtn.innerText = "Show Starred Ideas";
-  }
   cardSection.innerHTML = "";
   for (var i = 0; i < ideas.length; i++) {
     if (ideas[i].title.toLowerCase().includes(searchInput.value.toLowerCase()) ||
@@ -180,24 +186,55 @@ function checkStarredValue(index) {
 }
 
 function toggleComment() {
+  if (search.classList.contains("hidden")) {
+    cardView();
+    return;
+  }
+  focusCard();
+}
+
+function focusCard() {
   for (var i = 0; i < ideas.length; i++) {
     if (parseInt(event.target.closest(".idea-card").id) === ideas[i].id) {
-      saveButton.hidden = true;
-      saveCommentBtn.hidden = false;
-      titleInput.value = "";
-      bodyInput.value = "";
+      commentView();
+      displayComments(i);
+      htmlCreator(i);
     }
   }
 }
 
+function commentView() {
+  saveButton.hidden = true;
+  saveCommentBtn.hidden = false;
+  saveCommentBtn.disabled = true;
+  saveCommentBtn.classList.add("comment-view");
+  search.classList.add("hidden");
+  resetForm();
+  cardSection.innerHTML = "";
+}
+
+function cardView() {
+  saveButton.hidden = false;
+  saveCommentBtn.hidden = true;
+  saveCommentBtn.classList.remove("comment-view");
+  search.classList.remove("hidden");
+  resetForm();
+  displayCards();
+}
+
 function saveComment(event) {
   event.preventDefault();
-  newComment = new Comment(titleInput.value, bodyInput.value)
-  comments.push(newComment);
+  console.log(event);
   newComment.saveToStorage();
   disableSaveBttn()
   displayCards();
   return newComment;
+}
+
+function resetForm() {
+  titleInput.value = "";
+  bodyInput.value = "";
+  saveButton.disabled = true;
 }
 
 function htmlCreator(index) {
@@ -218,18 +255,18 @@ function htmlCreator(index) {
   </div>`
 }
 
-function commentBox(index) {
-  cardSection.innerHTML += `
-  <div class="commentArea" id=${ideas[index].id}>
+function popCommentBox(i,index) {
+  commentSection.innerHTML += `
+  <div class="commentArea" id=${ideas[index].comments[i].id}>
     <div class="comment-controls">
-      <img class="star" src="${checkStarredValue(index)}" alt="star">
+      <img class="star" src="assets/star.svg" alt="star">
       <img class="delete" src="assets/delete.svg" alt="delete">
     </div>
     <article class="comment-content">
-      <h1 class="idea-title"><strong>${ideas[index].title}</strong></h1>
-      <p class="idea-body">${ideas[index].body}</p>
+      <h1 class="idea-title"><strong>${ideas[index].comments[i].title}</strong></h1>
+      <p class="idea-body">${ideas[index].comments[i].body}</p>
     </article>
   </div>`;
-  posterForm.hidden = false;
-  form.hidden = true;
+  // posterForm.hidden = false;
+  // form.hidden = true;
 }

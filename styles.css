@@ -38,6 +38,7 @@ body {
   flex-direction: column;
   align-items: flex-start;
   height: 10em;
+  padding-bottom: 5%;
   font-weight: Light;
 }
 
@@ -47,13 +48,14 @@ body {
   margin-top: 6%;
   font-size: 15pt;
   font-weight: bold;
+  height:2em;
 }
 
 .show-starred-ideas {
   background-color: #5356A4;
   color: #E9E9F3;
   width: 85%;
-  margin-top: 6%;
+  margin-top: 1%;
   margin-left: 6%;
   padding: 2% 2% 2%;
   font-size: 116%;
@@ -69,11 +71,11 @@ body {
 .comment-section {
   margin-top: 2em;
   overflow: auto;
-  height: 34em;
   background-color: #1F1F3D;
   display:flex;
   flex-wrap: wrap;
   justify-content: center;
+  height: 100%;
   /* flex-direction: row; */
 }
 
@@ -102,13 +104,15 @@ body {
 .comment-content {
   color: #1F1F3D;
   margin-left: 6%;
-  font-size: 16px;
+  font-size: 7pt;
 }
 
 .comment-title {
   /* font-size: 1px; */
   /* font-size: 169%; */
-  margin-top: 4%;
+  margin-top: 2%;
+  font-size: 12pt;
+
 }
 
 .comment-para {
@@ -116,8 +120,10 @@ body {
   overflow: auto;
   display: flex;
   flex-wrap: wrap;
-  height: 4em;
+  height: 100%;
   width: 96%;
+  font-size: 12pt;
+
 }
 
 /*~~~~~~INPUT BOX~~~~~~~~~*/
@@ -163,7 +169,7 @@ body {
 
 .user-comment {
   width: 41%;
-  height: 97%;
+  height: 350px;
   border: solid 3px #7375B5;
   color: #1F1F3D;
   border-radius: 5px;
@@ -304,4 +310,8 @@ body {
 
 .hidden {
   display: none!important;
+}
+.comment-view {
+  margin-top: 20px;
+  margin-bottom: 35px;
 }
