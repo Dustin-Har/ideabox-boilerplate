@@ -7,10 +7,10 @@ class Comment {
   }
 
   saveToStorage() {
-    localStorage.setItem("comments", JSON.stringify(ideas));
+    localStorage.setItem("ideas", JSON.stringify(ideas));
   }
 
   deleteFromStorage() {
-    localStorage.setItem("comments", JSON.stringify(ideas));
+    localStorage.setItem("ideas", JSON.stringify(ideas));
   }
 }
