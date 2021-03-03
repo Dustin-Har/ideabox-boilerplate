@@ -103,7 +103,6 @@ function changeView() {
   }
 }
 
-
 function deleteCard() {
   for (var i = 0; i < ideas.length; i++) {
     if (parseInt(event.target.closest(".idea-card").id) === ideas[i].id) {
@@ -170,7 +169,6 @@ function checkStarredValue(index) {
     return "assets/star.svg"
   }
 }
-
 
 function htmlCreator(index) {
   cardSection.innerHTML += `
