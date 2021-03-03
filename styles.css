@@ -1,11 +1,6 @@
-/*
-Need cursor styling when conditions are met in js function
-Need hidden !important styling for later use of icon switches and search filtering
-*/
-/* Add Hidden */
-/*overflow: auto;*/
+
 * {
-  /* border: solid 2px blue; */
+
   font-family: "Open Sans";
 }
 
@@ -175,7 +170,6 @@ body {
   justify-content: space-evenly;
   margin-left: 20%;
   height: 100%;
-  /* overflow: auto; */
   background-color: #EAEAF4;
 
 }
@@ -196,7 +190,7 @@ body {
   border-bottom: 2px solid #1F1F3D;
 }
 /*~~~~~~~PICTURES~~~~~~~*/
-.star
+.star,
 .delete,
 .comment-icon {
   width: 15%;
@@ -204,11 +198,9 @@ body {
 }
 /*~~~~~~~MIDDLE SECTION~~~~~~~*/
 .idea-content {
-  /* overflow: auto; */
   background-color: #FFFFFF;
   color: #1F1F3D;
   padding-left: 3%;
-  /* margin-bottom:1.64em; */
 }
 
 .idea-title {
