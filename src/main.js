@@ -1,120 +1,138 @@
 //  Global Variables:
-var newIdea;
 var ideas = [];
 
-//  Query Selectors:
-var form = document.querySelector(".form");
-var showStarred = document.querySelector("#showStarred");
-var titleInput = document.querySelector("#titleInput");
 var bodyInput = document.querySelector("#bodyInput");
-var saveButton = document.querySelector("#saveButton");
-var searchInput = document.querySelector("#searchInput");
-var star = document.querySelectorAll(".star");
-var commentIcon = document.querySelector("#commentIcon");
 var cardSection = document.querySelector("#cardSection");
+var form = document.querySelector("#form");
+var searchInput = document.querySelector("#searchInput");
 var showStarredBtn = document.querySelector("#showStarred");
-var filterOn = false;
-saveButton.disabled = true;
+var titleInput = document.querySelector("#titleInput");
 
-form.addEventListener("keyup", activateSave);
-cardSection.addEventListener("click", deleteCard);
-showStarredBtn.addEventListener("click", showStarredCards);
-window.addEventListener("onload", getStorage());
-searchInput.addEventListener("keyup", inputSearch);
+window.addEventListener('click', clickHandler);
+window.addEventListener('keyup', keyupHandler);
+window.addEventListener('onload', getStorage());
 
+function clickHandler(event) {
+  if (event.target.classList.contains("star")) {
+    changeStar(event);
+  }
+  if (event.target.classList.value === "delete") {
+    deleteCard();
+  }
+  if (event.target.classList.value === "show-starred-ideas") {
+    showStarredCards();
+  }
+  if (event.target.classList.value === "save-button") {
+    saveCard(event);
+  }
+}
 
+function keyupHandler(event) {
+  if (event.target === titleInput || event.target === bodyInput) {
+    activateSave(event);
+  }
+  if (event.target.classList.contains('search')) {
+    inputSearch(event);
+  }
+}
 
 function getStorage() {
   var storedIdeas = localStorage.getItem("ideas");
   ideas = JSON.parse(localStorage.getItem("ideas")) || [];
-  instanciateStorage(ideas);
+  instantiateStorage(ideas);
 }
 
-function instanciateStorage(parsedStorage) {
-  for (var i=0; i<parsedStorage.length; i++) {
+function instantiateStorage(parsedStorage) {
+  for (var i = 0; i < parsedStorage.length; i++) {
     parsedStorage[i] = new Idea(parsedStorage[i].title, parsedStorage[i].body, parsedStorage[i].id, parsedStorage[i].isStarred)
-    localStorage.setItem("ideas", JSON.stringify(parsedStorage));
-  } displayCards();
+    parsedStorage[i].saveToStorage();
+    cardView();
+  }
+}
+
+function displayCards() {
+  showStarredBtn.innerText = "Show Starred Ideas";
+  cardSection.innerHTML = "";
+  for (var i = 0; i < ideas.length; i++) {
+    htmlCreator(i);
+  }
+}
+
+function activateSave() {
+  if (titleInput.value && bodyInput.value) {
+    saveButton.disabled = false;
+  } else {
+    saveButton.disabled = true;
+  }
+}
+
+function saveCard(event) {
+  event.preventDefault();
+  newIdea = new Idea(titleInput.value, bodyInput.value)
+  ideas.push(newIdea);
+  newIdea.saveToStorage();
+  cardView();
+  return newIdea;
+}
+
+function changeButtonText() {
+  searchInput.value = "";
+  if (showStarredBtn.innerText === "Show Starred Ideas") {
+    showStarredBtn.innerText = "Show All Ideas";
+  } else {
+    showStarredBtn.innerText = "Show Starred Ideas";
+  }
+}
+
+function showAllCards() {
+  if (showStarredBtn.innerText === "Show All Ideas") {
+    changeButtonText();
+    cardView();
+  }
 }
 
 function showStarredCards() {
-  if (!filterOn) {
+  if (showStarredBtn.innerText === "Show Starred Ideas") {
+    changeButtonText();
     cardSection.innerHTML = "";
-    filterOn = true;
-    showStarredBtn.innerText = "Show All Ideas"
     for (var i = 0; i < ideas.length; i++) {
       if (ideas[i].isStarred) {
         htmlCreator(i);
       }
     }
   } else {
-    filterOn = false;
-    showStarredBtn.innerText = "Show Starred Ideas";
-    displayCards();
-  }
-}
-
-function activateSave(e) {
-  var key = e.key;
-  if (titleInput.value && bodyInput.value) {
-    saveButton.disabled = false;
-  } else if (key === "Backspace" || key === "Delete") {
-    saveButton.disabled = true;
-  } else if (!titleInput.value && !bodyInput.value) {
-    saveButton.disabled = true;
+    showAllCards();
   }
 }
 
 function inputSearch() {
   cardSection.innerHTML = "";
   for (var i = 0; i < ideas.length; i++) {
-    if (ideas[i].title.toLowerCase().includes(searchInput.value.toLowerCase())
-      ||  ideas[i].body.toLowerCase().includes(searchInput.value.toLowerCase())) {
+    if (ideas[i].title.toLowerCase().includes(searchInput.value.toLowerCase()) ||
+      ideas[i].body.toLowerCase().includes(searchInput.value.toLowerCase())) {
       htmlCreator(i);
     }
   }
 }
 
-function disableSaveBttn() {
-  saveButton.disabled = true;
-  titleInput.value = "";
-  bodyInput.value = "";
-}
-
-saveButton.addEventListener("click", function(event) {
-  event.preventDefault();
-  newIdea = new Idea(titleInput.value, bodyInput.value)
-  ideas.push(newIdea);
-  newIdea.saveToStorage();
-  disableSaveBttn()
-  displayCards();
-  return newIdea;
-})
-
 function deleteCard() {
-  if (event.target.classList.value === "delete") {
-    for (i = 0; i < ideas.length; i++) {
-      if (parseInt(event.target.closest(".idea-card").id) === ideas[i].id) {
-        var focusIdea = new Idea(ideas[i].title, ideas[i].body);
-        ideas.splice(i, 1);
-        focusIdea.deleteFromStorage();
-        displayCards();
-      }
+  for (var i = 0; i < ideas.length; i++) {
+    if (parseInt(event.target.closest(".idea-card").id) === ideas[i].id) {
+      var focusIdea = new Idea(ideas[i].title, ideas[i].body);
+      ideas.splice(i, 1);
+      focusIdea.deleteFromStorage();
+      cardView();
     }
   }
 }
 
-cardSection.addEventListener('click', changeStar);
-
 function changeStar(event) {
-  if (event.target.classList.contains("star")) {
-    if (event.target.src.includes("/assets/star.svg")) {
-      event.target.src = "assets/star-active.svg";
-      updateInstance(event);
-    } else {
-      event.target.src = "assets/star.svg";
-      updateInstance(event);
-    }
+  if (event.target.src.includes("/assets/star.svg")) {
+    event.target.src = "assets/star-active.svg";
+    updateInstance(event);
+  } else {
+    event.target.src = "assets/star.svg";
+    updateInstance(event);
   }
 }
 
@@ -140,13 +158,16 @@ function checkStarredValue(index) {
   }
 }
 
-function displayCards() {
-  showStarredBtn.innerText = "Show Starred Ideas";
-  filterOn = false;
-  cardSection.innerHTML = "";
-  for (var i = 0; i < ideas.length; i++) {
-    htmlCreator(i);
-  }
+function cardView() {
+  resetForm();
+  displayCards();
+}
+
+function resetForm() {
+  titleInput.value = "";
+  bodyInput.value = "";
+  saveButton.disabled = true;
+  searchInput.value = "";
 }
 
 function htmlCreator(index) {
