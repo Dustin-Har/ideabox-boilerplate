@@ -102,12 +102,12 @@ function changeView() {
   }
 }
 
-
 function deleteCard() {
   for (var i = 0; i < ideas.length; i++) {
     if (parseInt(event.target.closest(".idea-card").id) === ideas[i].id) {
+      var focusIdea = new Idea(ideas[i].title, ideas[i].body);
       ideas.splice(i, 1);
-      ideas[i].deleteFromStorage();
+      focusIdea.deleteFromStorage();
       cardView();
     }
   }
@@ -168,7 +168,6 @@ function checkStarredValue(index) {
     return "assets/star.svg"
   }
 }
-
 
 function htmlCreator(index) {
   cardSection.innerHTML += `
