@@ -17,7 +17,7 @@ Overview
 Every developer has more ideas than time. As David Allen likes to say "the human brain is for creating ideas, not remembering them." In this project, we'll be building an application that records and archives our ideas (good and bad alike).
 
 ###### Main View
-// add image here
+<img width="1440" alt="Screen Shot 2021-03-02 at 6 52 46 PM" src="https://user-images.githubusercontent.com/75390410/109733604-6d57ae00-7b8d-11eb-8984-b2d9b38ca719.png">
 
 
 How to
