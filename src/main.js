@@ -20,7 +20,7 @@ function clickHandler(event) {
     deleteCard();
   }
   if (event.target.classList.value === "show-starred-ideas") {
-    showStarredCards();
+    changeView();
   }
   if (event.target.classList.value === "save-button") {
     saveCard(event);
@@ -50,6 +50,26 @@ function instantiateStorage(parsedStorage) {
   }
 }
 
+function saveCard(event) {
+  event.preventDefault();
+  newIdea = new Idea(titleInput.value, bodyInput.value)
+  ideas.push(newIdea);
+  newIdea.saveToStorage();
+  cardView();
+}
+
+function cardView() {
+  resetForm();
+  displayCards();
+}
+
+function resetForm() {
+  titleInput.value = "";
+  bodyInput.value = "";
+  saveButton.disabled = true;
+  searchInput.value = "";
+}
+
 function displayCards() {
   showStarredBtn.innerText = "Show Starred Ideas";
   cardSection.innerHTML = "";
@@ -66,73 +86,32 @@ function activateSave() {
   }
 }
 
-function saveCard(event) {
-  event.preventDefault();
-  newIdea = new Idea(titleInput.value, bodyInput.value)
-  ideas.push(newIdea);
-  newIdea.saveToStorage();
-  cardView();
-  return newIdea;
-}
-
-function changeButtonText() {
-  searchInput.value = "";
-  if (showStarredBtn.innerText === "Show Starred Ideas") {
-    showStarredBtn.innerText = "Show All Ideas";
-  } else {
-    showStarredBtn.innerText = "Show Starred Ideas";
-  }
-}
-
 function showAllCards() {
   if (showStarredBtn.innerText === "Show All Ideas") {
-    changeButtonText();
+    changeView();
     cardView();
   }
 }
 
-function showStarredCards() {
+function changeView() {
+  resetForm();
   if (showStarredBtn.innerText === "Show Starred Ideas") {
-    changeButtonText();
-    cardSection.innerHTML = "";
-    for (var i = 0; i < ideas.length; i++) {
-      if (ideas[i].isStarred) {
-        htmlCreator(i);
-      }
-    }
+    showStarredBtn.innerText = "Show All Ideas";
+    showStarredCards()
   } else {
-    showAllCards();
+    showStarredBtn.innerText = "Show Starred Ideas";
+    cardView();
   }
 }
 
-function inputSearch() {
-  cardSection.innerHTML = "";
-  for (var i = 0; i < ideas.length; i++) {
-    if (ideas[i].title.toLowerCase().includes(searchInput.value.toLowerCase()) ||
-      ideas[i].body.toLowerCase().includes(searchInput.value.toLowerCase())) {
-      htmlCreator(i);
-    }
-  }
-}
 
 function deleteCard() {
   for (var i = 0; i < ideas.length; i++) {
     if (parseInt(event.target.closest(".idea-card").id) === ideas[i].id) {
-      var focusIdea = new Idea(ideas[i].title, ideas[i].body);
       ideas.splice(i, 1);
-      focusIdea.deleteFromStorage();
+      ideas[i].deleteFromStorage();
       cardView();
     }
-  }
-}
-
-function changeStar(event) {
-  if (event.target.src.includes("/assets/star.svg")) {
-    event.target.src = "assets/star-active.svg";
-    updateInstance(event);
-  } else {
-    event.target.src = "assets/star.svg";
-    updateInstance(event);
   }
 }
 
@@ -150,6 +129,36 @@ function updateInstance(event) {
   }
 }
 
+function inputSearch() {
+  showStarredBtn.innerText = "Show Starred Ideas";
+  cardSection.innerHTML = "";
+  for (var i = 0; i < ideas.length; i++) {
+    if (ideas[i].title.toLowerCase().includes(searchInput.value.toLowerCase()) ||
+    ideas[i].body.toLowerCase().includes(searchInput.value.toLowerCase())) {
+      htmlCreator(i);
+    }
+  }
+}
+
+function showStarredCards() {
+    cardSection.innerHTML = "";
+    for (var i = 0; i < ideas.length; i++) {
+      if (ideas[i].isStarred) {
+        htmlCreator(i);
+    }
+  }
+}
+
+function changeStar(event) {
+  if (event.target.src.includes("/assets/star.svg")) {
+    event.target.src = "assets/star-active.svg";
+    updateInstance(event);
+  } else {
+    event.target.src = "assets/star.svg";
+    updateInstance(event);
+  }
+}
+
 function checkStarredValue(index) {
   if (ideas[index].isStarred) {
     return "assets/star-active.svg"
@@ -158,17 +167,6 @@ function checkStarredValue(index) {
   }
 }
 
-function cardView() {
-  resetForm();
-  displayCards();
-}
-
-function resetForm() {
-  titleInput.value = "";
-  bodyInput.value = "";
-  saveButton.disabled = true;
-  searchInput.value = "";
-}
 
 function htmlCreator(index) {
   cardSection.innerHTML += `
