@@ -29,8 +29,9 @@ How to
   <img width="1440" alt="Screen Shot 2021-03-02 at 6 55 50 PM" src="https://user-images.githubusercontent.com/75390410/109733768-c6274680-7b8d-11eb-8c42-c91ce74cc8d1.png">
 ###### Starring Idea Cards
 * Click the star in the top left-hand corner of the idea card to star it.
+<img width="1440" alt="Screen Shot 2021-03-02 at 7 03 31 PM" src="https://user-images.githubusercontent.com/75390410/109733830-e2c37e80-7b8d-11eb-931e-21d7c71dae20.png">
 * Click again to unstar the idea card.
-
+ <img width="1440" alt="Screen Shot 2021-03-02 at 6 55 50 PM" src="https://user-images.githubusercontent.com/75390410/109733768-c6274680-7b8d-11eb-8c42-c91ce74cc8d1.png">
 ###### Deleting Idea Cards
 * Click the X icon in the top right hand corner of the idea card. When you release your click, it will be deleted.
 
