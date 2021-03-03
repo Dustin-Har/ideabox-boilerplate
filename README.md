@@ -53,9 +53,9 @@ Every developer has more ideas than time. As David Allen likes to say "the human
     <img width="1440" alt="Screen Shot 2021-03-02 at 7 04 21 PM" src="https://user-images.githubusercontent.com/75390410/109734013-42218e80-7b8e-11eb-89b9-5406d8114d26.png">
 
 -   You can also filter to a specific search string by simply typing in the search box.
-       Here is the link to the branch containing our most recent progress in iteration 5: /link <https://github.com/Dustin-Har/ideabox-boilerplate/tree/iteration5/comments>
-
 
 <img width="1440" alt="Screen Shot 2021-03-02 at 7 39 46 PM" src="https://user-images.githubusercontent.com/75390410/109734535-29fe3f00-7b8f-11eb-95d5-0fb5b42ca3a7.png">
 
 <img width="1440" alt="Screen Shot 2021-03-02 at 7 40 10 PM" src="https://user-images.githubusercontent.com/75390410/109734600-413d2c80-7b8f-11eb-8736-cae7976a0998.png">
+
+-   Here is the link to the branch containing our most recent progress in iteration 5: /link <https://github.com/Dustin-Har/ideabox-boilerplate/tree/iteration5/comments>
