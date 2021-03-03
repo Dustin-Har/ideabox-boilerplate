@@ -24,8 +24,9 @@ How to
 -------
 ###### Creating Idea Cards
 * Create an idea by populating the _title and body fields in the form.
+* <img width="1440" alt="Screen Shot 2021-03-02 at 6 55 00 PM" src="https://user-images.githubusercontent.com/75390410/109733664-8bbda980-7b8d-11eb-8921-4dfb7b23db0c.png">
 * Save your idea by clicking the _Save_ button.
-
+  
 ###### Starring Idea Cards
 * Click the star in the top left-hand corner of the idea card to star it.
 * Click again to unstar the idea card.
