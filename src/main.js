@@ -127,7 +127,7 @@ function updateInstance(event) {
   }
 }
 
-function resetView(){
+function resetView() {
   showStarredBtn.innerText = "Show Starred Ideas";
   cardSection.innerHTML = "";
 }
@@ -136,17 +136,17 @@ function inputSearch() {
   resetView();
   for (var i = 0; i < ideas.length; i++) {
     if (ideas[i].title.toLowerCase().includes(searchInput.value.toLowerCase()) ||
-    ideas[i].body.toLowerCase().includes(searchInput.value.toLowerCase())) {
+      ideas[i].body.toLowerCase().includes(searchInput.value.toLowerCase())) {
       htmlCreator(i);
     }
   }
 }
 
 function showStarredCards() {
-    cardSection.innerHTML = "";
-    for (var i = 0; i < ideas.length; i++) {
-      if (ideas[i].isStarred) {
-        htmlCreator(i);
+  cardSection.innerHTML = "";
+  for (var i = 0; i < ideas.length; i++) {
+    if (ideas[i].isStarred) {
+      htmlCreator(i);
     }
   }
 }
