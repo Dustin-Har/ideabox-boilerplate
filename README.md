@@ -37,6 +37,8 @@ How to
 <img width="1440" alt="Screen Shot 2021-03-02 at 7 21 28 PM" src="https://user-images.githubusercontent.com/75390410/109734308-caa02f00-7b8e-11eb-9b8d-1b6692e42648.png">
 ###### Adding Comments to Idea Cards
 * Add a comment to an idea card by clicking the comment button at the bottom of each idea card.
+  could not finish all. everything we got up to is in this branch/link https://github.com/Dustin-Har/ideabox-boilerplate/tree/iteration5/comments
+
 
 ###### Filtering Available Idea Cards
 * You can filter to "Starred" ideas with the _Show Starred Ideas_ button on the left side of the page.
