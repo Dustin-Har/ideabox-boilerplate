@@ -1,4 +1,3 @@
-//  Global Variables:
 var ideas = [];
 
 var bodyInput = document.querySelector("#bodyInput");
